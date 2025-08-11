@@ -1,0 +1,44 @@
+apiVersion: ai.sap.com/v1alpha1
+kind: ServingTemplate
+metadata:
+  name: ollama-serving-template
+  annotations:
+    scenarios.ai.sap.com/description: "Run a ollama server on SAP AI Core"
+    scenarios.ai.sap.com/name: "ollama"
+    executables.ai.sap.com/description: "Run a ollama server on SAP AI Core"
+    executables.ai.sap.com/name: "ollama"
+  labels:
+    scenarios.ai.sap.com/id: "ollama"
+    ai.sap.com/version: "0.0.1"
+spec:
+  inputs:
+    parameters:
+      - name: modelName 
+        default: "gpt-oss:20b" 
+        type: string
+        description: "Model Name to be used for inference with SAP Generative AI Hub SDK"
+      - name: resourcePlan
+        type: "string"
+        default: "infer.l"
+        description: "Resource Plan of SAP AI Core. Supported: infer.s, infer.m, infer.l, train.l"
+  template:
+    apiVersion: "serving.kserve.io/v1beta1"
+    metadata:
+      annotations: |
+        autoscaling.knative.dev/metric: concurrency
+        autoscaling.knative.dev/target: 1
+        autoscaling.knative.dev/targetBurstCapacity: 0
+      labels: |
+        ai.sap.com/resourcePlan: "{{inputs.parameters.resourcePlan}}"
+    spec: |
+      predictor:
+        imagePullSecrets:
+        - name: docker-secret-aman
+        minReplicas: 1
+        maxReplicas: 1
+        containers:
+        - name: kserve-container
+          image: docker.io/amanichopra/ollama-serve:latest
+          ports:
+            - containerPort: 11434
+              protocol: TCP
