@@ -40,5 +40,5 @@ spec:
         - name: kserve-container
           image: docker.io/amanichopra/ollama-serve:latest
           ports:
-            - containerPort: 11434
+            - containerPort: 8080
               protocol: TCP
