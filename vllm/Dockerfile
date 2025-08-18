@@ -1,6 +1,5 @@
 # Specify the base layers (default dependencies) to use
-ARG BASE_IMAGE=ubuntu:22.04
-FROM ${BASE_IMAGE}
+FROM vllm/vllm-openai:latest
 
 # Update and install dependencies
 RUN apt-get update && \
