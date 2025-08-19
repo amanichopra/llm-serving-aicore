@@ -9,7 +9,7 @@ metadata:
     executables.ai.sap.com/name: "custom-serve"
   labels:
     scenarios.ai.sap.com/id: "custom-serve"
-    ai.sap.com/version: "0.0.1"
+    ai.sap.com/version: "0.0.2"
 spec:
   inputs:
     parameters:
@@ -19,7 +19,7 @@ spec:
         description: "Model Name to be used for inference with SAP Generative AI Hub SDK"
       - name: resourcePlan
         type: "string"
-        default: "infer2.4xl"
+        default: "infer2.l"
         description: "Resource Plan of SAP AI Core. Supported: infer.s, infer.m, infer.l, train.l"
   template:
     apiVersion: "serving.kserve.io/v1beta1"
