@@ -19,7 +19,7 @@ spec:
         description: "Model Name to be used for inference with SAP Generative AI Hub SDK"
       - name: resourcePlan
         type: "string"
-        default: "yo"
+        default: "infer2.4xl"
         description: "Resource Plan of SAP AI Core. Supported: infer.s, infer.m, infer.l, train.l"
   template:
     apiVersion: "serving.kserve.io/v1beta1"
@@ -29,7 +29,7 @@ spec:
         autoscaling.knative.dev/target: 1
         autoscaling.knative.dev/targetBurstCapacity: 0
       labels: |
-        ai.sap.com/resourcePlan: "yo"
+        ai.sap.com/resourcePlan: "{{inputs.parameters.resourcePlan}}"
     spec: |
       predictor:
         imagePullSecrets:
