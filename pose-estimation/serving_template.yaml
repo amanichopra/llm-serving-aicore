@@ -1,0 +1,40 @@
+apiVersion: ai.sap.com/v1alpha1
+kind: ServingTemplate
+metadata:
+  name: pose-estimation-serving-template
+  annotations:
+    scenarios.ai.sap.com/description: "Run a server hosting a yolo model on SAP AI Core"
+    scenarios.ai.sap.com/name: "yolo"
+    executables.ai.sap.com/description: "Run a server hosting a yolo model on SAP AI Core"
+    executables.ai.sap.com/name: "yolo"
+  labels:
+    scenarios.ai.sap.com/id: "yolo"
+    ai.sap.com/version: "0.0.1"
+spec:
+  inputs:
+    parameters:
+      - name: resourcePlan
+        type: "string"
+        default: "infer.l"
+        description: "Resource Plan of SAP AI Core. Supported: infer.s, infer.m, infer.l, train.l"
+  template:
+    apiVersion: "serving.kserve.io/v1beta1"
+    metadata:
+      annotations: |
+        autoscaling.knative.dev/metric: concurrency
+        autoscaling.knative.dev/target: 1
+        autoscaling.knative.dev/targetBurstCapacity: 0
+      labels: |
+        ai.sap.com/resourcePlan: "{{inputs.parameters.resourcePlan}}"
+    spec: |
+      predictor:
+        imagePullSecrets:
+        - name: docker-secret-aman
+        minReplicas: 1
+        maxReplicas: 1
+        containers:
+        - name: kserve-container
+          image: docker.io/amanichopra/pose-estimation-yolo:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
