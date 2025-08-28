@@ -1,0 +1,3 @@
+# Serving Models on AI Core
+
+This repo contains code to serve models through Ollama and Ultralytics on AI Core. The AI Core serving templates are contained in the `.yaml` files in `ollama_llms/` and `pose_estimation_yolo/`. These folders also contain the respective Dockerfiles and inference code. You can use `setup.ipynb` to create the AI Core deployments/configurations. Finally, once the models are served, you can use the postman collection `postman_collection.json` to send requests to the inference servers.
